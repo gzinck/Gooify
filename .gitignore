@@ -1,0 +1,11 @@
+# Ignore the cache of credentials
+.cache*
+
+# Ignore the python cache folder
+__pycache__/
+
+# Ignore the weird thing
+.DS_Store
+
+# Ignore the error log
+error-log.txt
