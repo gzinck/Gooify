@@ -71,7 +71,7 @@ class Playlists:
         """
         self.p_index += 1
         if(self.p_index <= len(self.playlists)):
-            print('Starting playlist', i)
+            print('Starting playlist', self.p_index)
             return self.playlists[self.p_index - 1]
         else:
             raise StopIteration
