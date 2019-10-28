@@ -9,11 +9,28 @@ class SpotifyClient:
         This connects to Spotify's servers.
         """
         # This determines what the app has access to do
-        scope = 'user-library-read user-library-modify playlist-modify-private playlist-read-private'
-
+        scope = 'user-library-read user-library-modify playlist-modify-private playlist-read-private playlist-modify-public'
+        
         username = input('Type your Spotify username below.\n--> ')
 
-        # os.remove(f".cache-{username}") # Only needed if already ran the app in different mode
+        # If used an old scope, we might have to delete the cache
+        dir_path = os.path.dirname(os.path.realpath(__file__)) + '/.cache-spotify' + username
+        cache = 0
+        if(not os.path.isfile(dir_path)):
+            cache = open(dir_path, 'w')
+            cache.write("v1.0")
+            if(os.path.isfile(f".cache-{username}")):
+                os.remove(f".cache-{username}") # Only needed if already ran the app in different mode
+        else:
+            cache = open(dir_path, 'r')
+            if(cache.read() != "v1.0"):
+                cache.close()
+                if(os.path.isfile(f".cache-{username}")):
+                    os.remove(f".cache-{username}") # Only needed if already ran the app in different mode
+                cache = open(dir_path, 'w')
+                cache.write("v1.0")
+        cache.close()
+
         token = util.prompt_for_user_token(username=username, scope=scope, client_id='d2847081cfd04a248bf67b8fcf49b0cf', client_secret='b553b59f9c9f44f69f368c5d94017288', redirect_uri='http://graemezinck.ca/')
 
         if(token):

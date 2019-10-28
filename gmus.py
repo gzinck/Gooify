@@ -12,11 +12,16 @@ class GMusicClient:
 
         username = input('Type your Google Play Music email below.\n--> ')
         dir_path = os.path.dirname(os.path.realpath(__file__)) + '/.cache-gmusic-' + ''.join(filter(str.isalpha, username))
-
         # Check if already authenticated
         if(not os.path.isfile(dir_path)):
             self.api.perform_oauth(open_browser=True, storage_filepath=dir_path)
-        self.api.oauth_login(Mobileclient.FROM_MAC_ADDRESS)
+
+        # Attempt to log in; if fail, get new token.
+        try:
+            self.api.oauth_login(Mobileclient.FROM_MAC_ADDRESS)
+        except:
+            self.api.perform_oauth(open_browser=True, storage_filepath=dir_path)
+            self.api.oauth_login(Mobileclient.FROM_MAC_ADDRESS)
 
         print('Connected to GMusic')
 
